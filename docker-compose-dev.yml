@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  api:
+    volumes:
+      - ./api:/code
+    working_dir: /code
+    container_name: remote-api
+    build:
+      context: ./api
+    ports:
+      - 3001:3001
+    environment:
+      DEBUG: True
+      PORT: 3001
+    restart: always
+    entrypoint: bash -c 'npm run dev'
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: remote-redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-data:/data
+
+  ui:
+    image: node:20
+    container_name: remote-ui
+    ports:
+      - 3000:3000
+    volumes:
+      - ./ui/:/src
+    working_dir: /src
+
+    depends_on:
+      - api
+    entrypoint: bash -c "npm start"
