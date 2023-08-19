@@ -6,5 +6,6 @@ export const ComponentHost = (props: any) => {
         <HomeProvider>
             <Component />
         </HomeProvider>
+
     )
 }

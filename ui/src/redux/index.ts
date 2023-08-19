@@ -1,4 +1,5 @@
 
 
 export * from './store';
-export * from './reducers/reducers';
+export * from './reducers/selectedTrack';
+export * from './reducers/searchResults';

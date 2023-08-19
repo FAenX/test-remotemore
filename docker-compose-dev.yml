@@ -10,21 +10,10 @@ services:
     ports:
       - 3001:3001
     environment:
-      DEBUG: True
+      DEBUG: true
       PORT: 3001
     restart: always
     entrypoint: bash -c 'npm run dev'
-    depends_on:
-      - redis
-
-  redis:
-    image: redis:latest
-    container_name: remote-redis
-    restart: always
-    ports:
-      - 6379:6379
-    volumes:
-      - ./redis-data:/data
 
   ui:
     image: node:20

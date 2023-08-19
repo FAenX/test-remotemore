@@ -1,10 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
-import ph from "./reducers/reducers"
+import selectedTrack from "./reducers/selectedTrack"
+import selectedAlbumTracks from "./reducers/selectedAlbumTracks"
+import searchResults from './reducers/searchResults'
+import searchString from './reducers/searchString'
 
 
 export const store = configureStore({
     reducer: {
-        ph: ph,
+        track: selectedTrack,
+        albumTracks: selectedAlbumTracks,
+        searchResults: searchResults,
+        searchString: searchString,
     },
 })
 

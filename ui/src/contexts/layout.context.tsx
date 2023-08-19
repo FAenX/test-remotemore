@@ -12,6 +12,7 @@ const AppStyled = () => {
       <Stack
       justifyContent={"flex-end"}
       width={"100%"}
+      position={"fixed"}
     //   border={1}
      >
         <Toolbar>
@@ -35,7 +36,6 @@ const AppStyled = () => {
                 height: 40,
                 // border: 1,
             }}
-            variant='square'
           >
 
           </Avatar>

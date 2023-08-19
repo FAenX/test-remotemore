@@ -5,6 +5,7 @@ import { CssBaseline, ThemeOptions, ThemeProvider, createTheme } from '@mui/mate
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { store } from './redux/store';
 import {HomePage as Home} from './pages/home';
+import {Track} from './pages/track';
 
 
 
@@ -30,6 +31,7 @@ function App() {
               <Router>
                 <Routes>
                   <Route path={"/"} element={<Home/>} />
+                  <Route path={"/track"} element={<Track/>} />
                 </Routes>
               </Router>
       </Provider>

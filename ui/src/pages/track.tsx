@@ -1,12 +1,12 @@
 import { LayoutContext } from "../contexts/layout.context"
-import { ComponentHost } from "../components/home"
+import {Track as TrackComponent} from "src/components/track"
 
 
 
-export const HomePage = () => {
+export const Track = () => {
     return(
         <LayoutContext>
-            <ComponentHost/>
+            <TrackComponent/>
         </LayoutContext>
     )
 }

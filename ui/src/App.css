@@ -1,9 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle, #4c0196,#280050, #0d0019, #0c0018);
+  background: radial-gradient(circle, #4c0196,#090021, #310011, #010f51);
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +16,12 @@ body {
   position: relative;
   z-index: 1;
   text-shadow: 0 0 10px rgba(0,0,0,0.5);
-  background: radial-gradient(circle, #250049,#130050, #0a0013, #080023);
+  background: radial-gradient(circle, #002817,#50004f, #51004a, #5c0000);
 
 
+}
+
+#artist-headline{
+  background: radial-gradient(circle, #00493a,#015f28, #002b0c, #3f015a);
+  padding: 2em;
 }
