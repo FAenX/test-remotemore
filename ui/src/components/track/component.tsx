@@ -38,7 +38,7 @@ const Header = () => {
                 >{artist?.name}</Typography>
                 <Stack
                 direction={"row"}
-                justifyContent={"flex-end"}
+                justifyContent={"flex-start"}
                 alignContent={"center"}
                 alignItems={"center"}
                 spacing={2}
@@ -124,7 +124,7 @@ const theme = createTheme({
             root: {
                 // color: "yellow",
                 fontWeight: 600,
-                fontSize: "0.7rem",
+                fontSize: "1rem",
 
 
             }

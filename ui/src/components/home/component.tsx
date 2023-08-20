@@ -56,7 +56,7 @@ const theme = createTheme({
             root: {
                 // color: "yellow",
                 fontWeight: 600,
-                fontSize: "0.7rem",
+                fontSize: "1rem",
 
 
             }
