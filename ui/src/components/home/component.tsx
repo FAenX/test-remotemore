@@ -209,6 +209,7 @@ const Ad = () => {
 
                     <Button
                     variant={"contained"}
+                    disabled
                     sx={{
                         borderRadius: 5,
                         backgroundColor: "#4c0196",
