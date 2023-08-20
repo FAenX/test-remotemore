@@ -76,6 +76,16 @@ const Tracks = () => {
         track && handleSelect(track);
     }
 
+    const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [])
+
     return (
             <ThemeProvider theme={theme}>
             <Container
@@ -102,9 +112,9 @@ const Tracks = () => {
                         <TableCell>
                             <Typography variant={"body1"}>Artist title</Typography>
                         </TableCell>
-                        <TableCell>
+                        {windowWidth > 700 && <TableCell>
                             <Typography variant={"body1"}>Album title</Typography>
-                        </TableCell>
+                        </TableCell>} 
 
                         <TableCell>
                             <Typography variant={"body1"}>Track duration</Typography>
@@ -156,9 +166,9 @@ const Tracks = () => {
                     <TableCell>
                             <Typography variant={"body1"}>{result.artist.name}</Typography>
                     </TableCell>
-                    <TableCell>
+                    {windowWidth > 700 && <TableCell>
                             <Typography variant={"body1"}>{result.album.title}</Typography>
-                    </TableCell>
+                    </TableCell> }
                     <TableCell>
                         <Typography variant={"body1"}>
                         {formatSecondsToMinutesAndSeconds(result.duration)}
@@ -250,7 +260,6 @@ export const Component = () => {
         results,
         err,
         handleSubmit, searchString} = React.useContext(HomeContext);
-        console.log(err);
     return(
         <Stack
             alignItems={"center"}

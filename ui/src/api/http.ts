@@ -42,37 +42,51 @@ function errorHandler(error: any) {
 class API {
 
     callAPI = async (
-        api: string,
-        endpoint: string,
-        method: 'get' | 'post',
-        data?: object,
-        queryParam?: string,
-        path? : string
+        url: string ,
+        hook: string,
+        path? : string,
+        queryString?: string
         ): Promise<any> => {
-        let url = `${api}/${endpoint}`;
-        if (queryParam) {
-            url = url.concat(`?${queryParam}`);
-        }
-        if (path) {
-            url = url.concat(`?q=/${path}`);
-        }
-        console.log(queryParam)
-        console.log(url)
-        console.log(method)
-        console.log(endpoint)
-        console.log(data)
-        console.log(path)
+        
         try {
-            if (method.toLocaleLowerCase() === 'get') {
-                const response = await axios[method](url, config);
-                console.log(response.data)
-                return response.data;
-            } else{
-                return {
-                    "message": "method not supported"
-                }
+            console.log(url)
+            console.log(hook)
+            console.log(path)
+            console.log(queryString)
+            if (hook === "search" && queryString){
+                url = url + "?hook=search&queryString=" + queryString
+                console.log(queryString)
+                console.log(url)
+
+            }
+            else if (hook === "tracks" && path){
+                url = url + "?hook=tracks&path=" + path
+                console.log(path)
+                console.log(url)
+
+
+            }
+            else if (hook === "artist" && path){
+                url = url + "?hook=artist&path=" + path
+                console.log(path)
+                console.log(url)
             }
 
+            else if (hook === "album" && path){
+                url = url + "?hook=album&path=" + path
+                console.log(path)
+                console.log(url)
+            }
+            else{
+                return {
+                    error: true,
+                    message: 'Application failure.',
+                    };
+            }
+            const response = await axios.get(url , config);
+            // console.log(response.data)
+            return response.data;
+        
         } catch (error) {
             return errorHandler(error);
         }

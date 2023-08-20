@@ -1,6 +1,5 @@
-import { HomeContext } from "src/contexts/home.context";
 import { Avatar, Chip, Container, IconButton, Stack, Table, TableCell, TableHead, TableRow, ThemeProvider, Typography, createTheme } from "@mui/material";
-import { intervalToDuration, formatDuration, format } from "date-fns";
+import { format, set } from "date-fns";
 import React from "react";
 import { TrackContext} from "src/contexts/track.context"
 
@@ -8,10 +7,8 @@ import { TrackContext} from "src/contexts/track.context"
 
 const Header = () => {
     const {
-        tracks,
         artist
     } = React.useContext(TrackContext);
-    console.log(artist);
     return(
         <Stack
          id="artist-headline"
@@ -135,14 +132,94 @@ const theme = createTheme({
 
 
 const Tracks = () => {
-    
+
+    const [albumYear, setAlbumYear] = React.useState<any>({})
+    const [albumFans, setAlbumFans] = React.useState<any>({})
+    const [albumDuration, setAlbumDuration] = React.useState<any>({})
+    const [albumGenre, setAlbumGenre] = React.useState<any>({})
+
     const {
             tracks,
-            artist
+            getAlbumDetails
         } = React.useContext(TrackContext);
 
-        console.log(tracks);
 
+    React.useEffect(()=>{
+        if(!tracks || tracks.length === 0){
+            return;
+        }
+
+        for (const track of tracks) {
+            const id = parseInt(track?.album?.id?.toString() || "-1");
+            console.log(id)
+            if(id > 0){
+                getAlbumDetails(id).then((res)=>{
+                    // console.log(res);
+                    const year = res.release_date;
+                    const trackId = track.id?.toString();
+
+                    setAlbumYear((prev: any)=>{
+                        if (trackId){
+                            return {
+                                ...prev,
+                                [trackId]: year
+                            }
+                        }
+                    })
+                    setAlbumFans((prev: any)=>{
+                        if (trackId){
+                            return {
+                                ...prev,
+                                [trackId]: res.fans
+                            }
+                        }
+                    })
+
+                    setAlbumDuration((prev: any)=>{
+                        if (trackId){
+                            return {
+                                ...prev,
+                                [trackId]: res.duration
+                            }
+                        }
+                    })
+
+                    setAlbumGenre((prev: any)=>{
+                        if (trackId){
+                            return {
+                                ...prev,
+                                [trackId]: res.genres
+                            }
+                        }
+                    })
+
+
+
+
+
+                // setAlbum(res);
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+        }
+
+        console.log(albumYear)
+    }, [tracks])
+
+
+    const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [])
+    
+    
+    
 
     return (
             <ThemeProvider theme={theme}>
@@ -171,9 +248,9 @@ const Tracks = () => {
                         <TableCell>
                             <Typography variant={"body1"}>Artist title</Typography>
                         </TableCell>
-                        <TableCell>
+                        {windowWidth > 700 && <TableCell>
                             <Typography variant={"body1"}>Album title</Typography>
-                        </TableCell>
+                        </TableCell>}
 
                         <TableCell>
                             <Typography variant={"body1"}>Track duration</Typography>
@@ -190,7 +267,6 @@ const Tracks = () => {
                 id = {track.id}
                 onClick={()=>{}}
                 >
-                    
                     <TableCell>
                         <IconButton color="inherit">
                             <Typography variant={"body1"}>{index + 1}</Typography>
@@ -219,9 +295,48 @@ const Tracks = () => {
                     <TableCell>
                             <Typography variant={"body1"}>{track.artist.name}</Typography>
                     </TableCell>
-                    <TableCell>
-                            <Typography variant={"body1"}>{track.album.title}</Typography>
-                    </TableCell>
+                    {windowWidth > 700 && <TableCell>
+                            <Typography variant={"body1"}>
+                                {
+                                track.album.title
+                                }
+                            </Typography>
+                    <Stack
+                    direction={"row"}
+                    // spacing={2}
+                    flexWrap={"wrap"}
+                    justifyContent={"flex-start"}
+                    alignItems={"center"}
+                    alignContent={"flext-start"}
+                    >
+                        {albumYear[track.id] && <Chip
+                        variant="outlined"
+                        color="primary"
+                        label={`${albumYear[track.id]}`}/> }
+                        {albumFans[track.id] && <Chip
+                        color="primary"
+                        variant="outlined"
+                        label={`fans: ${albumFans[track.id]}`}/> }
+
+                        {albumDuration[track.id] && <Chip
+                        color="primary"
+                        variant="outlined"
+                        label={`${formatSecondsToMinutesAndSeconds(albumDuration[track.id])}`}/>}
+                        {
+                            albumGenre[track.id] && albumGenre[track.id].data?.map((genre: any)=>{
+                                return(
+                                    <Chip 
+                                    color="primary"
+                                    variant="outlined"
+                                    label={`${genre.name}`}/>
+                                )
+                            }
+                            )
+                        }
+ 
+                    </Stack>
+
+                    </TableCell>}
                     <TableCell>
                         <Typography variant={"body1"}>
                         {formatSecondsToMinutesAndSeconds(track.duration)}

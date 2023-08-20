@@ -1,19 +1,5 @@
 version: '3.9'
 services:
-  api:
-    volumes:
-      - ./api:/code
-    working_dir: /code
-    container_name: remote-api
-    build:
-      context: ./api
-    ports:
-      - 3001:3001
-    environment:
-      DEBUG: true
-      PORT: 3001
-    restart: always
-    entrypoint: bash -c 'npm run dev'
 
   ui:
     image: node:20
@@ -23,7 +9,4 @@ services:
     volumes:
       - ./ui/:/src
     working_dir: /src
-
-    depends_on:
-      - api
     entrypoint: bash -c "npm start"

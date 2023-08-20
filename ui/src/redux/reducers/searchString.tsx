@@ -11,7 +11,6 @@ const searchString = createSlice({
   reducers: {
     setSearchString:
       (state, action: PayloadAction<string>) => {
-        console.log(action.payload);
         return state = action.payload;
       },
   },

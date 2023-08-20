@@ -1,17 +1,18 @@
 
-import { Res, Track } from 'src/types/home';
+import { Album, Res, Track } from 'src/types/home';
 import API  from './http';
 import { Artist } from 'src/types/artist';
 
 
 
-const endpoints = {
+const hooks = {
     search: 'search',
     tracks: 'tracks',
     artist: 'artist',
+    album: 'album',
 }
 
-const apiUrl =`http://localhost:3001`;
+const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001/remote-api-inc/us-central1/handleRequest';
 
 
 
@@ -20,10 +21,9 @@ const apiUrl =`http://localhost:3001`;
 const search = async (searchString: string):Promise< Res > => {
     const dres = await new API().callAPI(
         apiUrl,
-        endpoints.search,
-        "get",
+        hooks.search,
         undefined,
-        `q=${searchString}`,
+        searchString,
         );
 
     return {
@@ -34,17 +34,13 @@ const search = async (searchString: string):Promise< Res > => {
 
 
 const tracks = async (artistId?: number):Promise< Track[] > => {
-    console.log(artistId)
     if (!artistId) {
         return [];
     }
     const tracks = await new API().callAPI(
         apiUrl,
-        endpoints.tracks,
-        "get",
-        undefined,
-        undefined,
-        `artist/${artistId}/top?limit=5`
+        hooks.tracks,
+        `/${artistId}/top?limit=5`
         );
 
    return  tracks.data
@@ -58,21 +54,35 @@ const artist = async (artistId?: number):Promise< Artist > => {
     }
     const artist = await new API().callAPI(
         apiUrl,
-        endpoints.artist,
-        "get",
-        undefined,
-        `q=${artistId}`
+        hooks.artist,
+        `/${artistId}`
         );
 
-    console.log(artist.data)
    return  artist
 
 };
+
+const album = async (albumId?: number):Promise< Album > => {
+    if (!albumId) {
+        return {};
+    }
+    const album = await new API().callAPI(
+        apiUrl,
+        hooks.album,
+        `/${albumId}`
+        );
+
+
+   return  album
+
+};
+
 
 
 
 export  {
     search,
     tracks,
-    artist
+    artist,
+    album,
 };
